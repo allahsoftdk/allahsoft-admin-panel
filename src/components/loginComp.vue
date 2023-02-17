@@ -9,25 +9,26 @@
       placeholder="password"
     /><br /><br />
     <button @click="login()">Login</button>
-    Your username: <b>{{ username }}</b
-    ><br /><br />
-    Your password: <b>{{ password }}</b>
+  </div>
+  <div v-if="errorMessage">
+    <p>{{ errorMessage }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
-import { mapStores } from 'pinia'
+import { mapStores } from "pinia";
 import { userStore } from "../stores/user";
 export default {
   name: "userLogin",
   computed: {
-    ...mapStores(userStore)
+    ...mapStores(userStore),
   },
   data() {
     return {
       username: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
@@ -47,7 +48,11 @@ export default {
       })
         .then((user) => {
           this.userStore.setUser(user.data);
-          this.$router.push("/");
+          if (user.data.role === "admin") {
+            this.$router.push("/");
+          } else {
+            this.errorMessage = "You are not an admin and cannot log in here";
+          }
         })
         .catch((err) => console.log(err));
     },
