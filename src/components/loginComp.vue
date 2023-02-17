@@ -48,7 +48,7 @@ export default {
       })
         .then((user) => {
           this.userStore.setUser(user.data);
-          if (user.data.role === "admin") {
+          if (user.data.roleId.role === "admin") {
             this.$router.push("/");
           } else {
             this.errorMessage = "You are not an admin and cannot log in here";

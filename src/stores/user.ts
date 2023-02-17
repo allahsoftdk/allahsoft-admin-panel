@@ -1,21 +1,30 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-export const userStore = defineStore("user", () => {
-    const user = ref(0);
-    function getUser() {
-        return this.user;
-    }
-    function setUser(user: any) {
-        this.user = user;
-    }
-    return { user, getUser, setUser };
+export const userStore = defineStore("user", {
+  state: () => {
+    return {
+      user: null,
+    };
+  },
+  getters: {
+    getUser() {
+      return this.user;
+    },
+  },
+  actions: {
+    setUser(user: any) {
+      this.user = user;
+    },
+  },
+  persist: {
+    storage: sessionStorage,
+  },
 });
 
-
 interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
+  id: number;
+  name: string;
+  email: string;
+  role: string;
 }
