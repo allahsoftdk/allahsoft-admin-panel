@@ -28,6 +28,7 @@
 import axios from "axios";
 import { mapStores } from "pinia";
 import { userStore } from "../stores/user";
+import Swal from "sweetalert2";
 export default {
   name: "userLogin",
   computed: {
@@ -56,6 +57,22 @@ export default {
         },
       })
         .then((user) => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Success login'
+          })
           console.log(user);
           this.userStore.setUser(user.data);
           if (user.data.roleId.role === "admin") {
@@ -72,4 +89,8 @@ export default {
 
 </script>
 
-<style></style>
+<style>
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+}
+</style>
