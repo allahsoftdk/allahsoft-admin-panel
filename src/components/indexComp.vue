@@ -8,7 +8,8 @@ export default {
   },
   data() {
     return {
-      userAmount: {}
+      allUsers: {},
+      allPosts: {}
     }
   },
   computed: {
@@ -29,7 +30,7 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-    fetchUserAmount() {
+    fetchAllUsers() {
       axios({
         method: "get",
         url: "http://localhost/api/user/",
@@ -39,13 +40,32 @@ export default {
         withCredentials: true,
       })
         .then((res) => {
-          this.userAmount = res.data.length;
+          console.log(res);
+          this.allUsers = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
+    fetchAllPosts() {
+      axios({
+        method: "get",
+        url: "http://localhost/api/post/",
+        headers: {
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      })
+        .then((res) => {
+          console.log(res);
+          this.allPosts = res.data;
         })
         .catch((err) => console.log(err));
     },
   },
   created() {
-    return this.fetchUserAmount();
+    return [
+      this.fetchAllUsers(),
+      this.fetchAllPosts()
+    ];
   }
 };
 </script>
@@ -86,7 +106,7 @@ export default {
                 <a class="" href="#">View Details</a>
               </div>
               <div class="col-12 text-success">
-                <h4>{{ userAmount }}</h4>
+                <h4>{{ allUsers.length }}</h4>
               </div>
             </div>
             <div class="row border-top bg-light pt-1">
@@ -110,7 +130,7 @@ export default {
                 <a class="" href="#">View Details</a>
               </div>
               <div class="col-12 text-success">
-                <h4>12.927</h4>
+                <h4>{{ allPosts.length }}</h4>
               </div>
             </div>
             <div class="row border-top bg-light pt-1">
