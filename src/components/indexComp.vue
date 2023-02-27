@@ -9,7 +9,8 @@ export default {
   data() {
     return {
       allUsers: {},
-      allPosts: {}
+      allPosts: {},
+      allPostComment: {}
     }
   },
   computed: {
@@ -30,7 +31,7 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-    fetchAllUsers() {
+    async fetchAllUsers() {
       axios({
         method: "get",
         url: "http://localhost/api/user/",
@@ -40,12 +41,11 @@ export default {
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res);
           this.allUsers = res.data;
         })
         .catch((err) => console.log(err));
     },
-    fetchAllPosts() {
+    async fetchAllPosts() {
       axios({
         method: "get",
         url: "http://localhost/api/post/",
@@ -55,8 +55,21 @@ export default {
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res);
           this.allPosts = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
+    async fetchAllPostComments() {
+      axios({
+        method: "get",
+        url: "http://localhost/api/post_comment/",
+        headers: {
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      })
+        .then((res) => {
+          this.allPostComment = res.data;
         })
         .catch((err) => console.log(err));
     },
@@ -64,7 +77,8 @@ export default {
   created() {
     return [
       this.fetchAllUsers(),
-      this.fetchAllPosts()
+      this.fetchAllPosts(),
+      this.fetchAllPostComments()
     ];
   }
 };
@@ -154,7 +168,7 @@ export default {
                 <a class="" href="#">View Details</a>
               </div>
               <div class="col-12 text-success">
-                <h4>23.456</h4>
+                <h4>{{ allPostComment.length }}</h4>
               </div>
             </div>
             <div class="row border-top bg-light pt-1">
@@ -217,6 +231,28 @@ export default {
         </div>
       </div>
       <div class="col-10">
+        <div class="col-12 border rounded shadow">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="allUser in allUsers">
+                <th scope="row">{{ allUser.id }}</th>
+                <td> {{ allUser.name }}</td>
+                <td>{{ allUser.email }}</td>
+                <td>{{ allUser.roleId }}</td>
+                <td><button type="button" class="btn btn-link text-danger">Terminate</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
