@@ -6,6 +6,11 @@ export default {
   props: {
     user: {},
   },
+  data() {
+    return {
+      userAmount: {}
+    }
+  },
   computed: {
     ...mapStores(userStore),
   },
@@ -26,15 +31,15 @@ export default {
     },
     fetchUserAmount() {
       axios({
-        method: "post",
+        method: "get",
         url: "http://localhost/api/user/",
         headers: {
           Accept: "application/json",
         },
         withCredentials: true,
       })
-        .then((data) => {
-          console.log(data);
+        .then((res) => {
+          this.userAmount = res.data.length;
         })
         .catch((err) => console.log(err));
     },
@@ -48,7 +53,7 @@ export default {
 <template>
   <div class="container-fluid">
     <div class="row p-3">
-      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <nav class="navbar navbar-expand-lg navbar-light rounded shadow border">
         <a class="navbar-brand" href="#">Navbar</a>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
@@ -72,7 +77,7 @@ export default {
     <div class="row p-3">
       <div class="col-2">
         <div class="row">
-          <div class="col-12 border">
+          <div class="col-12 border rounded shadow">
             <div class="row">
               <div class="col-6 pt-2">
                 <h5>Users</h5>
@@ -81,7 +86,7 @@ export default {
                 <a class="" href="#">View Details</a>
               </div>
               <div class="col-12 text-success">
-                <h4>548</h4>
+                <h4>{{ userAmount }}</h4>
               </div>
             </div>
             <div class="row border-top bg-light pt-1">
@@ -96,7 +101,7 @@ export default {
         </div>
 
         <div class="row pt-2">
-          <div class="col-12 border">
+          <div class="col-12 border rounded shadow">
             <div class="row">
               <div class="col-6 pt-2">
                 <h5>Posts</h5>
@@ -120,7 +125,7 @@ export default {
         </div>
 
         <div class="row pt-2">
-          <div class="col-12 border">
+          <div class="col-12 border rounded shadow">
             <div class="row">
               <div class="col-6 pt-2">
                 <h5>Comments</h5>
@@ -144,7 +149,7 @@ export default {
         </div>
 
         <div class="row pt-2">
-          <div class="col-12 border">
+          <div class="col-12 border rounded shadow">
             <div class="row">
               <div class="col-6 pt-2">
                 <h5>Follows</h5>
@@ -168,7 +173,7 @@ export default {
         </div>
 
         <div class="row pt-2">
-          <div class="col-12 border">
+          <div class="col-12 border rounded shadow">
             <div class="row">
               <div class="col-6 pt-2">
                 <h5>Likes</h5>
@@ -191,15 +196,20 @@ export default {
           </div>
         </div>
       </div>
-      <div class="col-10 border-top border-right border-bottom">aaa</div>
+      <div class="col-10">
+      </div>
     </div>
 
     <div class="row">
-      <footer class="text-center">
-        <div class="text-muted">
-          <h6>Copyright © 2023 by Allahsoft.dk</h6>
-        </div>
-      </footer>
+      <div class="col-4 text-muted text-start pt-2">
+        <p>v1.02.1</p>
+      </div>
+      <div class="col-4 text-muted text-center pt-2">
+        <p>Copyright © 2023 Allahsoft.dk</p>
+      </div>
+      <div class="col-4 text-muted text-end pt-2">
+        <p>Build: 270223</p>
+      </div>
     </div>
 
   </div>

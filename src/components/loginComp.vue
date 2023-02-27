@@ -11,7 +11,9 @@
             <div class="input-group mb-3">
               <input type="password" class="form-control" v-model="password" placeholder="Password">
             </div>
-            <button class="btn btn-primary btn-block" @click="login()">Go to Allah</button>
+            <div class="text-center">
+              <button class="btn btn-primary btn-block" @click="login()">Go to Allah</button>
+            </div>
           </div>
         </div>
       </div>
@@ -66,6 +68,8 @@ export default {
     },
   },
 };
+
+
 </script>
 
 <style></style>
