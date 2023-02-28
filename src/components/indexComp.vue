@@ -2,6 +2,7 @@
 import axios from "axios";
 import { mapStores } from "pinia";
 import { userStore } from "../stores/user";
+import Swal from "sweetalert2";
 export default {
   props: {
     user: {},
@@ -27,6 +28,22 @@ export default {
         withCredentials: true,
       })
         .then(() => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          })
+
+          Toast.fire({
+            icon: 'info',
+            title: 'You have been logout'
+          })
           this.$router.push("/login");
         })
         .catch((err) => console.log(err));
@@ -72,6 +89,41 @@ export default {
           this.allPostComment = res.data;
         })
         .catch((err) => console.log(err));
+    },
+    deleteUser() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios({
+            method: "delete",
+            url: "http://localhost/api/post_comment/1",
+            headers: {
+              Accept: "application/json",
+            },
+            withCredentials: true,
+          })
+            .then(() => {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+            })
+            .catch((err) => Swal.fire({
+              title: 'Error!',
+              text: 'An error happen',
+              icon: 'error',
+              confirmButtonText: 'Okay'
+            }));
+        }
+      })
     },
   },
   created() {
@@ -231,27 +283,35 @@ export default {
         </div>
       </div>
       <div class="col-10">
-        <div class="col-12 border rounded shadow">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="allUser in allUsers">
-                <th scope="row">{{ allUser.id }}</th>
-                <td> {{ allUser.name }}</td>
-                <td>{{ allUser.email }}</td>
-                <td>{{ allUser.roleId }}</td>
-                <td><button type="button" class="btn btn-link text-danger">Terminate</button></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="row">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        </div>
+
+        <div class="row pt-3 p-3">
+          <div class="col-12 border rounded shadow" style="overflow: auto; max-height: 517px;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Activity</th>
+                  <th scope="col">Terminate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="allUser in allUsers">
+                  <th scope="row">{{ allUser.id }}</th>
+                  <td> {{ allUser.name }}</td>
+                  <td>{{ allUser.email }}</td>
+                  <td>{{ allUser.roleId }}</td>
+                  <td><a class="text-info" href="#">View activity</a></td>
+                  <td><button type="button" @click="deleteUser()" class="btn btn-link text-danger">Terminate</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -271,4 +331,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style>
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+</style>
