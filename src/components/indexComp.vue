@@ -127,11 +127,9 @@ export default {
     },
   },
   created() {
-    return [
-      this.fetchAllUsers(),
-      this.fetchAllPosts(),
-      this.fetchAllPostComments()
-    ];
+    Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments()]).then((res) => {
+      console.log(res);
+    });
   }
 };
 </script>
