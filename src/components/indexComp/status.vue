@@ -58,9 +58,7 @@ export default {
         },
     },
     created() {
-        Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments()]).then((res) => {
-            console.log(res);
-        });
+        Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments()]).then((res) => { });
     }
 };
 </script>

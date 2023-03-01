@@ -31,6 +31,7 @@ export default {
             this.showPostCommentActive = false;
         },
         displayUser() {
+            console.log(this.postStore.getPosts)
             this.resetDisplay();
             this.showUserActive = true;
             this.showUser = true;
@@ -59,6 +60,41 @@ export default {
                     axios({
                         method: "delete",
                         url: "http://localhost/api/post_comment/1",
+                        headers: {
+                            Accept: "application/json",
+                        },
+                        withCredentials: true,
+                    })
+                        .then(() => {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        })
+                        .catch((err) => Swal.fire({
+                            title: 'Error!',
+                            text: 'An error happen',
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        }));
+                }
+            })
+        },
+        deletePost(postId: number) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios({
+                        method: "delete",
+                        url: "http://localhost/api/post/" + postId,
                         headers: {
                             Accept: "application/json",
                         },
@@ -117,10 +153,10 @@ export default {
                                 <th scope="row">{{ user.id }}</th>
                                 <td> {{ user.name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.roleId }}</td>
-                                <td><a class="text-info" href="#">View activity</a></td>
-                                <td><button type="button" @click="deleteUser()"
-                                        class="btn btn-link text-danger">Terminate</button></td>
+                                <td>{{ user.role.role }}</td>
+                                <td><a class=" text-light btn btn-info" href="#">View activity</a></td>
+                                <td><button type="button" @click="deleteUser()" class="btn btn-danger">Terminate</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -133,8 +169,7 @@ export default {
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Activity</th>
-                                <th scope="col">Terminate</th>
+                                <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,9 +178,8 @@ export default {
                                 <td> {{ post.user.name }}</td>
                                 <td>{{ post.user.email }}</td>
                                 <td>{{ post.description }}</td>
-                                <td><a class="text-info" href="#">View activity</a></td>
-                                <td><button type="button" @click="deleteUser()"
-                                        class="btn btn-link text-danger">Terminate</button></td>
+                                <td><button type="button" class="btn btn-danger"
+                                        @click="deletePost(post.id)">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -159,8 +193,7 @@ export default {
                                 <th scope="col">Email</th>
                                 <th scope="col">Comment</th>
                                 <th scope="col">Post link</th>
-                                <th scope="col">Activity</th>
-                                <th scope="col">Terminate</th>
+                                <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,9 +203,7 @@ export default {
                                 <td>{{ postComment.user.email }}</td>
                                 <td>{{ postComment.comment }}</td>
                                 <td><a href="#">{{ postComment.post.description }}</a></td>
-                                <td><a class="text-info" href="#">View activity</a></td>
-                                <td><button type="button" @click="deleteUser()"
-                                        class="btn btn-link text-danger">Terminate</button></td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
