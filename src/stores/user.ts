@@ -1,19 +1,20 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
+import type { User } from "interfaces/interfaces";
 
 export const userStore = defineStore("user", {
   state: () => {
     return {
-      user: null,
+      user: {} as User
     };
   },
   getters: {
-    getUser(): any {
+    getUser(): User {
       return this.user;
     },
   },
   actions: {
-    setUser(user: any) {
+    setUser(user: User) {
       this.user = user;
     },
   },
@@ -22,9 +23,3 @@ export const userStore = defineStore("user", {
   },
 });
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
