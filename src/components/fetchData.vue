@@ -1,5 +1,6 @@
 <script lang="ts">
 import axios from "axios";
+import Swal from "sweetalert2";
 import { usePostStore } from "../stores/posts";
 import { useUserStore } from "../stores/user";
 import { usePostCommentStore } from "../stores/postComments";
@@ -15,7 +16,9 @@ export default {
         return { userStore, postStore, postComment, prayerAlarm, role }
     },
     data() {
-        return {}
+        return {
+            errorMessage: "",
+        }
     },
     methods: {
         async fetchAllUsers() {
@@ -30,7 +33,9 @@ export default {
                 .then((res) => {
                     this.userStore.setUser(res.data);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    this.errorMessage = "An error occurred  while trying to fetch users"
+                });
         },
         async fetchAllPosts() {
             axios({

@@ -19,6 +19,7 @@ export interface Role {
 
 export interface Post {
     length: any;
+    filter: any;
 
 }
 

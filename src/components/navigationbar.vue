@@ -47,28 +47,21 @@ export default {
         },
 
     },
-    created() { }
 };
 </script>
 
 <template>
     <div class="row p-3">
-        <nav class="navbar navbar-expand-lg navbar-light shadow border">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <button @click="logOut()" class="btn btn-info">Log out</button>
-                    </li>
-                </ul>
+        <div class="col-12">
+            <div class="row p-2 bg-light shadow border">
+                <div class="col-2">
+                    <h2><strong>Allahsoft.dk</strong></h2>
+                </div>
+                <div class="col-10 d-flex justify-content-end">
+                     <button @click="logOut()" class="btn btn-warning"><i><strong>Log out</strong></i></button>
+                </div>
             </div>
-        </nav>
+        </div>
     </div>
 </template>
 

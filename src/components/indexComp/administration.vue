@@ -18,9 +18,9 @@ export default {
             showUser: true,
             showPost: false,
             showPostComment: false,
-            showUserActive: true,
-            showPostActive: false,
-            showPostCommentActive: false,
+            showPrayerAlarm: false,
+            showRole: false,
+            showEvent: false,
         }
     },
     methods: {
@@ -28,25 +28,34 @@ export default {
             this.showUser = false;
             this.showPost = false;
             this.showPostComment = false;
-            this.showUserActive = false;
-            this.showPostActive = false;
-            this.showPostCommentActive = false;
+            this.showPrayerAlarm = false;
+            this.showRole = false;
+            this.showEvent = false;
         },
         displayUser() {
-            console.log(this.prayerAlarm.getPrayerAlarm);
+            console.log(this.postComment.getPostComment);
             this.resetDisplay();
-            this.showUserActive = true;
             this.showUser = true;
         },
         displayPost() {
             this.resetDisplay();
-            this.showPostActive = true;
             this.showPost = true;
         },
         displayPostComment() {
             this.resetDisplay();
-            this.showPostCommentActive = true;
             this.showPostComment = true;
+        },
+        displayPrayerAlarm() {
+            this.resetDisplay();
+            this.showPrayerAlarm = true;
+        },
+        displayRole() {
+            this.resetDisplay();
+            this.showRole = true;
+        },
+        displayEvent() {
+            this.resetDisplay();
+            this.showEvent = true;
         },
         deleteUser() {
             Swal.fire({
@@ -70,22 +79,22 @@ export default {
                         .then(() => {
                             Swal.fire(
                                 'Deleted!',
-                                'Your file has been deleted.',
+                                'User has been deleted.',
                                 'success'
                             )
                         })
                         .catch((err) => Swal.fire({
                             title: 'Error!',
-                            text: 'An error happen',
+                            text: 'An error happen when trying to delete the user',
                             icon: 'error',
                             confirmButtonText: 'Okay'
                         }));
                 }
             })
         },
-        deletePost(postId: number) {
+        deletePost(postId: number, username: string) {
             Swal.fire({
-                title: 'Are you sure?',
+                title: 'Delete ' + username + "'s post",
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -117,6 +126,41 @@ export default {
                         }));
                 }
             })
+        }, 
+        deleteComment(commentId: number, username: string) {
+            Swal.fire({
+                title: 'Delete ' + username + "'s comment",
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios({
+                        method: "delete",
+                        url: "http://localhost/api/post_comment/" + commentId,
+                        headers: {
+                            Accept: "application/json",
+                        },
+                        withCredentials: true,
+                    })
+                        .then(() => {
+                            Swal.fire(
+                                'Deleted!',
+                                'Comment has been deleted.',
+                                'success'
+                            )
+                        })
+                        .catch((err) => Swal.fire({
+                            title: 'Error!',
+                            text: 'An error happen trying to delete the comment',
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        }));
+                }
+            })
         },
     },
 };
@@ -128,14 +172,26 @@ export default {
             <div id="tabs">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ active: showUserActive }" href="#user" @click="displayUser()">User</a>
+                        <a class="nav-link" :class="{ active: showUser }" href="#" @click="displayUser()">User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ active: showPostActive }" href="#post" @click="displayPost()">Post</a>
+                        <a class="nav-link" :class="{ active: showPost }" href="#" @click="displayPost()">Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ active: showPostComment }" href="#postComment"
+                        <a class="nav-link" :class="{ active: showPostComment }" href="#"
                             @click="displayPostComment()">Post Comments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ active: showPrayerAlarm }" href="#"
+                            @click="displayPrayerAlarm()">Prayer alarm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ active: showRole }" href="#"
+                            @click="displayRole()">Role</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ active: showEvent }" href="#"
+                            @click="displayEvent()">Event</a>
                     </li>
                 </ul>
                 <div v-if="showUser" class="shadow border border-top-0 p-3 overflow-auto">
@@ -181,7 +237,7 @@ export default {
                                 <td>{{ post.user.email }}</td>
                                 <td>{{ post.description }}</td>
                                 <td><button type="button" class="btn btn-danger"
-                                        @click="deletePost(post.id)">Delete</button></td>
+                                        @click="deletePost(post.id, post.user.name)">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -200,15 +256,40 @@ export default {
                         </thead>
                         <tbody>
                             <tr v-for="postCommentt in postComment.getPostComment">
-                                <th scope="row">{{ postComment.id }}</th>
+                                <th scope="row">{{ postCommentt.id }}</th>
                                 <td> {{ postCommentt.user.name }}</td>
                                 <td>{{ postCommentt.user.email }}</td>
                                 <td>{{ postCommentt.comment }}</td>
                                 <td><a href="#">{{ postCommentt.post.description }}</a></td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><button type="button" class="btn btn-danger" @click="deleteComment(postCommentt.id, postCommentt.user.name)">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div v-if="showPrayerAlarm" class="shadow border border-top-0 p-3 overflow-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="alarm in prayerAlarm.getPrayerAlarm">
+                                <th scope="row">{{ alarm.id }}</th>
+                                <td> {{ alarm.prayerAlarm }}</td>
+                                <td><button type="button" class="btn btn-danger" @click="deleteComment(postCommentt.id, postCommentt.user.name)">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        </div>
+                        <div class="col-6 border-left">
+                            <p>s</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
