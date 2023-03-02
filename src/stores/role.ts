@@ -1,21 +1,21 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import type { Post } from "interfaces/interfaces";
+import type { Role } from "interfaces/interfaces";
 
-export const usePostStore = defineStore("post", {
+export const useRoleStore = defineStore("role", {
     state: () => {
         return {
-            post: {} as Post
+            role: {} as Role
         };
     },
     getters: {
-        getPosts(): Post {
-            return this.post;
+        getRole(): Role {
+            return this.role;
         },
     },
     actions: {
-        setPosts(post: Post) {
-            this.post = post;
+        setRole(Role: Role) {
+            this.role = Role;
         },
     },
     persist: {

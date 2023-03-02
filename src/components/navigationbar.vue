@@ -1,18 +1,18 @@
 <script lang="ts">
 import axios from "axios";
-import { mapStores } from "pinia";
-import { userStore } from "../stores/user";
+import { useUserStore } from "../stores/user";
 import Swal from "sweetalert2";
 export default {
+    setup() {
+        const userStore = useUserStore();
+        return { userStore }
+    },
     props: {
         user: {},
     },
     data() {
         return {
         }
-    },
-    computed: {
-        ...mapStores(userStore),
     },
     methods: {
         logOut() {

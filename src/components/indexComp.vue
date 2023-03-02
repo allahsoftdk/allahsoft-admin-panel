@@ -2,17 +2,20 @@
 import navigationbar from "./navigationbar.vue";
 import status from "./indexComp/status.vue";
 import administration from "./indexComp/administration.vue";
+import fetchData from "./fetchData.vue";
 export default {
   components: {
     navigationbar,
     status,
-    administration
+    administration,
+    fetchData
   }
 };
 </script>
 
 <template>
   <div class="container-fluid">
+    <fetchData></fetchData>
     <navigationbar></navigationbar>
     <status></status>
     <administration></administration>

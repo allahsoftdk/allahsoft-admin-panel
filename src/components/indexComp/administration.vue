@@ -1,11 +1,18 @@
 <script lang="ts">
 import axios from "axios";
 import Swal from "sweetalert2";
-import { mapStores } from "pinia";
-import { postStore } from "../../stores/posts";
-import { userStore } from "../../stores/user";
-import { postCommentStore } from "../../stores/postComments";
+import { usePostStore } from "../../stores/posts";
+import { useUserStore } from "../../stores/user";
+import { usePostCommentStore } from "../../stores/postComments";
+import { usePrayerAlarmStore } from "../../stores/prayerAlarm";
 export default {
+    setup() {
+        const userStore = useUserStore();
+        const postStore = usePostStore();
+        const postComment = usePostCommentStore();
+        const prayerAlarm = usePrayerAlarmStore();
+        return { userStore, postStore, postComment, prayerAlarm }
+    },
     data() {
         return {
             showUser: true,
@@ -15,11 +22,6 @@ export default {
             showPostActive: false,
             showPostCommentActive: false,
         }
-    },
-    computed: {
-        ...mapStores(userStore),
-        ...mapStores(postStore),
-        ...mapStores(postCommentStore),
     },
     methods: {
         resetDisplay() {
@@ -31,7 +33,7 @@ export default {
             this.showPostCommentActive = false;
         },
         displayUser() {
-            console.log(this.postStore.getPosts)
+            console.log(this.prayerAlarm.getPrayerAlarm);
             this.resetDisplay();
             this.showUserActive = true;
             this.showUser = true;
@@ -149,7 +151,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="user in this.userStore.getUser">
+                            <tr v-for="user in userStore.getUser">
                                 <th scope="row">{{ user.id }}</th>
                                 <td> {{ user.name }}</td>
                                 <td>{{ user.email }}</td>
@@ -173,7 +175,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="post in this.postStore.getPosts">
+                            <tr v-for="post in postStore.getPosts">
                                 <th scope="row">{{ post.id }}</th>
                                 <td> {{ post.user.name }}</td>
                                 <td>{{ post.user.email }}</td>
@@ -197,12 +199,12 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="postComment in this.postCommentStore.getPostComment">
+                            <tr v-for="postCommentt in postComment.getPostComment">
                                 <th scope="row">{{ postComment.id }}</th>
-                                <td> {{ postComment.user.name }}</td>
-                                <td>{{ postComment.user.email }}</td>
-                                <td>{{ postComment.comment }}</td>
-                                <td><a href="#">{{ postComment.post.description }}</a></td>
+                                <td> {{ postCommentt.user.name }}</td>
+                                <td>{{ postCommentt.user.email }}</td>
+                                <td>{{ postCommentt.comment }}</td>
+                                <td><a href="#">{{ postCommentt.post.description }}</a></td>
                                 <td><button type="button" class="btn btn-danger">Delete</button></td>
                             </tr>
                         </tbody>

@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import type { PostComment } from "interfaces/interfaces";
 
-export const postCommentStore = defineStore("postComment", {
+export const usePostCommentStore = defineStore("postComment", {
     state: () => {
         return {
             postComment: {} as PostComment

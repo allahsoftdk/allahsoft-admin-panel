@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import type { User } from "interfaces/interfaces";
 
-export const userStore = defineStore("user", {
+export const useUserStore = defineStore("user", {
   state: () => {
     return {
       user: {} as User

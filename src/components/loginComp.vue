@@ -1,13 +1,8 @@
 <script lang="ts">
 import axios from "axios";
-import { mapStores } from "pinia";
-import { userStore } from "../stores/user";
 import Swal from "sweetalert2";
 export default {
   name: "userLogin",
-  computed: {
-    ...mapStores(userStore),
-  },
   data() {
     return {
       username: "",
@@ -46,7 +41,6 @@ export default {
             icon: 'success',
             title: 'Success login'
           })
-          this.userStore.setUser(user.data);
           if (user.data.roleId.role === "admin") {
             this.$router.push("/");
           } else {

@@ -24,6 +24,17 @@ export interface Post {
 
 export interface PostComment {
     length: any;
+    id: Number;
+
+}
+
+export interface PrayerAlarm {
+    length: any;
+
+}
+
+export interface Role {
+    length: any;
 
 }
 

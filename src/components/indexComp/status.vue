@@ -1,64 +1,14 @@
 <script lang="ts">
-import axios from "axios";
-import { mapStores } from "pinia";
-import { postStore } from "../../stores/posts";
-import { userStore } from "../../stores/user";
-import { postCommentStore } from "../../stores/postComments";
+import { usePostStore } from "../../stores/posts";
+import { useUserStore } from "../../stores/user";
+import { usePostCommentStore } from "../../stores/postComments";
 export default {
-    data() {
-        return {}
-    },
-    computed: {
-        ...mapStores(userStore),
-        ...mapStores(postStore),
-        ...mapStores(postCommentStore),
-    },
-    methods: {
-        async fetchAllUsers() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/user/",
-                headers: {
-                    Accept: "application/json",
-                },
-                withCredentials: true,
-            })
-                .then((res) => {
-                    this.userStore.setUser(res.data);
-                })
-                .catch((err) => console.log(err));
-        },
-        async fetchAllPosts() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/post/",
-                headers: {
-                    Accept: "application/json",
-                },
-                withCredentials: true,
-            })
-                .then((res) => {
-                    this.postStore.setPosts(res.data);
-                })
-                .catch((err) => console.log(err));
-        },
-        async fetchAllPostComments() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/post_comment/",
-                headers: {
-                    Accept: "application/json",
-                },
-                withCredentials: true,
-            })
-                .then((res) => {
-                    this.postCommentStore.setPostComment(res.data);
-                })
-                .catch((err) => console.log(err));
-        },
-    },
-    created() {
-        Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments()]).then((res) => { });
+    setup() {
+        const userStore = useUserStore();
+        const postStore = usePostStore();
+        const postComment = usePostCommentStore();
+
+        return { userStore, postStore, postComment }
     }
 };
 </script>
@@ -111,7 +61,7 @@ export default {
                             <h5>Total posts comments</h5>
                         </div>
                         <div class="col-12 text-success">
-                            <h4>{{ postCommentStore.getPostComment.length }}</h4>
+                            <h4>{{ postComment.getPostComment.length }}</h4>
                         </div>
                     </div>
                     <div class="row border-top bg-light pt-1">
