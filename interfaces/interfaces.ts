@@ -45,10 +45,13 @@ export interface Role {
 }
 
 export interface Event {
-    length: any;
-    filter: any;
+    id: number;
     t: number;
-    push: any;
+    name: string;
+    eventDate: string;
+    eventFrom: string;
+    eventTo: string;
+
 
 }
 

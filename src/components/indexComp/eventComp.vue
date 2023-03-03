@@ -87,7 +87,55 @@ export default {
                             this.event.deleteIslamicEvent(eventId);
                             Swal.fire(
                                 'Deleted!',
-                                'The alarm has been deleted.',
+                                'The event has been deleted.',
+                                'success'
+                            )
+                        })
+                        .catch((err) => Swal.fire({
+                            title: 'Error!',
+                            text: 'An error happen',
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        }));
+                }
+            })
+        },
+        updateEvent(eventId: number, eventName: string, eventDate: string, eventFrom: string, eventTo: string) {
+            Swal.fire({
+                title: 'Update alarm name',
+                html: `<div class="form-group"><label for="eventname">Event name</label><input type="text" class="form-control" id="eventname" value="`+eventName+`"></div><div class="form-group"><label for="eventdate">Event date</label><input type="text" class="form-control" id="eventdate" value="`+eventDate+`"></div><div class="form-group"><label for="eventfrom">Event from</label><input type="text" class="form-control" id="eventfrom" value="`+eventFrom+`"></div><div class="form-group"><label for="eventto">Event to</label><input type="text" class="form-control" id="eventto" value="`+eventTo+`"></div>`,
+                confirmButtonColor: "green",
+                confirmButtonText: 'Update',
+                focusConfirm: false,
+                preConfirm: (res) => {
+                    const eventname = Swal.getPopup().querySelector('#eventname').value 
+                    const eventdate = Swal.getPopup().querySelector('#eventdate').value
+                    const eventfrom = Swal.getPopup().querySelector('#eventdate').value
+                    const eventto = Swal.getPopup().querySelector('#eventdate').value
+                    return { eventname: eventname, eventdate: eventdate, eventfrom: eventfrom, eventto: eventto  }
+                }
+            }).then((result) => {
+                console.log(result);
+                if (result.isConfirmed) {
+                    axios({
+                        method: "put",
+                        url: "http://localhost/api/event/" + eventId,
+                        headers: {
+                            Accept: "application/json",
+                        },
+                        withCredentials: true,
+                        data: {
+                            name: result.value?.eventname,
+                            eventDate: result.value?.eventdate,
+                            eventFrom: result.value?.eventfrom,
+                            eventTo: result.value?.eventto,
+                        },
+                    })
+                        .then(() => {
+                            this.event.updateEvent(eventId ,result.value?.eventname, result.value?.eventdate, result.value?.eventfrom, result.value?.eventto);
+                            Swal.fire(
+                                'Updated!',
+                                'The alarm has been updated.',
                                 'success'
                             )
                         })
@@ -147,7 +195,7 @@ export default {
                         <td>{{ eventt.eventFrom }}</td>
                         <td>{{ eventt.eventTo }}</td>
                         <td><button type="button" class="btn btn-info text-white"
-                                @click="deleteComment(postCommentt.id, postCommentt.user.name)">Edit</button></td>
+                                @click="updateEvent(eventt.id , eventt.name, eventt.eventDate , eventt.eventFrom, eventt.eventTo )">Edit</button></td>
                         <td><button type="button" class="btn btn-danger"
                                 @click="deleteEvent(eventt.id, eventt.name)">Delete</button></td>
                     </tr>
