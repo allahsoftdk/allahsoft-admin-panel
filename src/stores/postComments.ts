@@ -17,6 +17,11 @@ export const usePostCommentStore = defineStore("postComment", {
         setPostComment(postComment: PostComment) {
             this.postComment = postComment;
         },
+        deletePostComment(id: number) {
+            this.postComment = this.postComment.filter((t: { id: number; }) => {
+                return t.id !== id
+            })
+        }
     },
     persist: {
         storage: sessionStorage,

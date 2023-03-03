@@ -28,6 +28,7 @@ export default {
                         withCredentials: true,
                     })
                         .then(() => {
+                            this.postComment.deletePostComment(commentId);
                             Swal.fire(
                                 'Deleted!',
                                 'Comment has been deleted.',

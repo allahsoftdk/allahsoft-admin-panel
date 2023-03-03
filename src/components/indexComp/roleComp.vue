@@ -77,7 +77,49 @@ export default {
                             this.role.deleteRole(roleId);
                             Swal.fire(
                                 'Deleted!',
-                                'The alarm has been deleted.',
+                                'The role has been deleted.',
+                                'success'
+                            )
+                        })
+                        .catch((err) => Swal.fire({
+                            title: 'Error!',
+                            text: 'An error happen',
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        }));
+                }
+            })
+        },
+        updateRole(roleId: number, roleName: string) {
+            Swal.fire({
+                title: 'Update alarm name',
+                html: `<label for="eventname">Update prayer alarm</label><textarea class="form-control pt-2" id="eventname"rows="3">` + roleName + `</textarea>`,
+                confirmButtonColor: "green",
+                confirmButtonText: 'Update',
+                focusConfirm: false,
+                preConfirm: (res) => {
+                    const updateRole = Swal.getPopup().querySelector('#eventname').value 
+                    return { newRole: updateRole }
+                }
+            }).then((result) => {
+                console.log(result);
+                if (result.isConfirmed) {
+                    axios({
+                        method: "put",
+                        url: "http://localhost/api/role/" + roleId,
+                        headers: {
+                            Accept: "application/json",
+                        },
+                        withCredentials: true,
+                        data: {
+                            name: result.value?.newRole
+                        },
+                    })
+                        .then(() => {
+                            this.role.updatePrayerAlarm(roleId, result.value?.newRole);
+                            Swal.fire(
+                                'Updated!',
+                                'The alarm has been updated.',
                                 'success'
                             )
                         })
@@ -119,7 +161,8 @@ export default {
                     <tr v-for="rolee in role.getRole">
                         <th scope="row">{{ rolee.id }}</th>
                         <td> {{ rolee.role }}</td>
-                        <td><a class=" text-light btn btn-info" href="#">Edit</a></td>
+                        <td><button type="button" @click="updateRole(rolee.id, rolee.role)"
+                                class="btn btn-info text-white">Edit</button></td>
                         <td><button type="button" @click="deleteRole(rolee.id, rolee.role)"
                                 class="btn btn-danger">Delete</button></td>
                     </tr>
