@@ -17,7 +17,7 @@ export const usePrayerAlarmStore = defineStore("prayerAlarm", {
         setPrayerAlarm(alarm: PrayerAlarm) {
             this.alarm = alarm;
         },
-        addAlarm(alarm: any){
+        addAlarm(alarm: any) {
             this.alarm.push(alarm)
         }
     },

@@ -42,6 +42,15 @@ export default {
                         icon: 'success',
                         title: 'Success Alarm created'
                     })
+
+                    if (this.alarmName != "") {
+                        this.prayerAlarm.addAlarm({
+                            id: res.data.id,
+                            prayerAlarm: this.alarmName,
+                        });
+                    }
+                    this.alarmName = "";
+
                 })
                 .catch((err) => { console.log(err) });
         },
@@ -64,7 +73,7 @@ export default {
                     <tr v-for="alarm in prayerAlarm.getPrayerAlarm">
                         <th scope="row">{{ alarm.id }}</th>
                         <td> {{ alarm.prayerAlarm }}</td>
-                        <td><button type="button" class="btn btn-danger" @click="createPrayerAlarm()">Delete</button>
+                        <td><button type="button" class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 </tbody>
