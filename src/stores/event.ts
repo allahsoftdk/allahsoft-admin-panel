@@ -22,7 +22,7 @@ export const useEventStore = defineStore("islamicEvent", {
         },
         deleteIslamicEvent(id: number) {
             this.islamicEvent = this.islamicEvent.filter((t: { id: number; }) => {
-                t.id !== id
+                return t.id !== id
             })
         }
     },

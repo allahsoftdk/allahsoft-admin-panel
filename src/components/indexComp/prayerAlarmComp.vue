@@ -93,15 +93,16 @@ export default {
         updatePrayerAlarm(alarmId: number, alarmName: string) {
             Swal.fire({
                 title: 'Update alarm name',
-                html: `<label for="eventname">Alarm name</label><input v-modle type="email" class="form-control" id="eventname" aria-describedby="emailHelp" value="` + alarmName + `">`,
+                html: `<label for="eventname">Update prayer alarm</label><textarea class="form-control pt-2" id="eventname"rows="3">` + alarmName + `</textarea>`,
                 confirmButtonColor: "green",
                 confirmButtonText: 'Update',
                 focusConfirm: false,
                 preConfirm: (res) => {
-                    const updatePrayerAlarmName = Swal.getPopup().querySelector('#eventname').value
+                    const updatePrayerAlarmName = Swal.getPopup().querySelector('#eventname').value 
                     return { newAlarm: updatePrayerAlarmName }
                 }
             }).then((result) => {
+                console.log(result);
                 if (result.isConfirmed) {
                     axios({
                         method: "put",
@@ -111,14 +112,14 @@ export default {
                         },
                         withCredentials: true,
                         data: {
-                            prayerAlarm: result.value.newAlarm
+                            setPrayerAlarm: result.value?.newAlarm
                         },
                     })
                         .then(() => {
-                            //this.prayerAlarm.deletePrayerAlarm(alarmId);
+                            this.prayerAlarm.updatePrayerAlarm(alarmId, result.value?.newAlarm);
                             Swal.fire(
-                                'Deleted!',
-                                'The alarm has been deleted.',
+                                'Updated!',
+                                'The alarm has been updated.',
                                 'success'
                             )
                         })
@@ -139,7 +140,7 @@ export default {
     <div class="row">
         <div class="col-12 pb-3 border-bottom">
             <div class="row">
-                <div class="col-11"><input class="form-control" id="name" v-model="alarmName"
+                <div class="col-11 "><input class="form-control border" id="name" v-model="alarmName"
                         placeholder="Enter the alarms name"></div>
                 <div class="col-1 d-flex justify-content-end"><button type="submit" class="btn btn-success text-white"
                         @click="createPrayerAlarm()">Create

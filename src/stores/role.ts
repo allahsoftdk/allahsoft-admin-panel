@@ -22,7 +22,7 @@ export const useRoleStore = defineStore("role", {
         },
         deleteRole(id: number) {
             this.role = this.role.filter((t: { id: number; }) => {
-                t.id !== id
+                return t.id !== id
             })
         }
     },

@@ -19,7 +19,7 @@ export const usePostStore = defineStore("post", {
         },
         deletePost(id: number) {
             this.post = this.post.filter((t: { id: number; }) => {
-                t.id !== id
+                return t.id !== id
             })
         }
     },

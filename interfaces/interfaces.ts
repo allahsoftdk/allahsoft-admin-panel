@@ -31,10 +31,8 @@ export interface PostComment {
 }
 
 export interface PrayerAlarm {
-    length: any;
-    push: any;
-    filter: any;
-    t: number;
+    id: number;
+    prayerAlarm: string;
 
 }
 
