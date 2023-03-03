@@ -20,6 +20,7 @@ export interface Role {
 export interface Post {
     length: any;
     filter: any;
+    t: number;
 
 }
 
@@ -31,6 +32,7 @@ export interface PostComment {
 
 export interface PrayerAlarm {
     length: any;
+    push: any;
 
 }
 

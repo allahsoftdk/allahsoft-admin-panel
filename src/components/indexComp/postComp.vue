@@ -28,6 +28,7 @@ export default {
                         withCredentials: true,
                     })
                         .then(() => {
+                            this.postStore.deletePost(postId);
                             Swal.fire(
                                 'Deleted!',
                                 'Your file has been deleted.',

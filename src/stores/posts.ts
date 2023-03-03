@@ -17,6 +17,11 @@ export const usePostStore = defineStore("post", {
         setPosts(post: Post) {
             this.post = post;
         },
+        deletePost(id: number) {
+            this.post = this.post.filter((t: { id: number; }) => {
+                t.id !== id
+            })
+        }
     },
     persist: {
         storage: sessionStorage,
