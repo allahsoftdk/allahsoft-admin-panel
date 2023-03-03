@@ -5,13 +5,17 @@ import { usePostStore } from "../../stores/posts";
 import { useUserStore } from "../../stores/user";
 import { usePostCommentStore } from "../../stores/postComments";
 import { usePrayerAlarmStore } from "../../stores/prayerAlarm";
+import { useRoleStore } from "../../stores/role";
+import { useEventStore } from "../../stores/event";
 export default {
     setup() {
         const userStore = useUserStore();
         const postStore = usePostStore();
         const postComment = usePostCommentStore();
         const prayerAlarm = usePrayerAlarmStore();
-        return { userStore, postStore, postComment, prayerAlarm }
+        const role = useRoleStore();
+        const event = useEventStore();
+        return { userStore, postStore, postComment, prayerAlarm, role, event }
     },
     data() {
         return {
@@ -21,6 +25,8 @@ export default {
             showPrayerAlarm: false,
             showRole: false,
             showEvent: false,
+            alarmName: "",
+            errorMessage: "",
         }
     },
     methods: {
@@ -33,7 +39,6 @@ export default {
             this.showEvent = false;
         },
         displayUser() {
-            console.log(this.postComment.getPostComment);
             this.resetDisplay();
             this.showUser = true;
         },
@@ -162,6 +167,38 @@ export default {
                 }
             })
         },
+        async createPrayerAlarm() {
+      axios({
+        method: "post",
+        url: "http://localhost/api/prayer_alarm/",
+        headers: {
+          Accept: "application/json",
+        },
+        withCredentials: true,
+        data: {
+            prayerAlarm: this.alarmName
+        },
+      })
+        .then((res) => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Success Alarm created'
+          })
+        })
+        .catch((err) => {console.log(err)});
+    },
     },
 };
 </script>
@@ -286,10 +323,58 @@ export default {
                         </tbody>
                     </table>
                         </div>
-                        <div class="col-6 border-left">
-                            <p>s</p>
+                        <div class="col-6">
+                            <label for="name">Alarm name</label>
+                            <input class="form-control" id="name"  v-model="alarmName"  placeholder="Enter email">
+                            <button type="submit" class="btn btn-info mt-3 text-white">Create Alarm</button>
                         </div>
                     </div>
+                </div>
+                <div v-if="showRole" class="shadow border border-top-0 p-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="rolee in role.getRole">
+                                <th scope="row">{{ rolee.id }}</th>
+                                <td> {{ rolee.role }}</td>
+                                <td><a class=" text-light btn btn-info" href="#">Edit</a></td>
+                                <td><button type="button" @click="deleteUser()" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-if="showEvent" class="shadow border border-top-0 p-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Event date</th>
+                                <th scope="col">From</th>
+                                <th scope="col">To</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="eventt in event.getEvent">
+                                <th scope="row">{{ eventt.id }}</th>
+                                <td> {{ eventt.name }}</td>
+                                <td>{{ eventt.eventDate }}</td>
+                                <td>{{ eventt.eventFrom }}</td>
+                                <td>{{ eventt.eventTo }}</td>
+                                <td><button type="button" class="btn btn-info text-white" @click="deleteComment(postCommentt.id, postCommentt.user.name)">Edit</button></td>
+                                <td><button type="button" class="btn btn-danger" @click="deleteComment(postCommentt.id, postCommentt.user.name)">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

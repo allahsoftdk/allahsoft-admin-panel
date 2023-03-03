@@ -39,4 +39,8 @@ export interface Role {
 
 }
 
+export interface Event {
+    length: any;
+
+}
 

@@ -6,6 +6,7 @@ import { useUserStore } from "../stores/user";
 import { usePostCommentStore } from "../stores/postComments";
 import { usePrayerAlarmStore } from "../stores/prayerAlarm";
 import { useRoleStore } from "../stores/role";
+import { useEventStore } from "../stores/event";
 export default {
     setup() {
         const userStore = useUserStore();
@@ -13,7 +14,8 @@ export default {
         const postComment = usePostCommentStore();
         const prayerAlarm = usePrayerAlarmStore();
         const role = useRoleStore();
-        return { userStore, postStore, postComment, prayerAlarm, role }
+        const event = useEventStore();
+        return { userStore, postStore, postComment, prayerAlarm, role, event }
     },
     data() {
         return {
@@ -79,9 +81,41 @@ export default {
                 })
                 .catch((err) => console.log(err));
         },
+        async fetchEvents() {
+            axios({
+                method: "get",
+                url: "http://localhost/api/event/",
+                headers: {
+                    Accept: "application/json",
+                },
+                withCredentials: true,
+            })
+                .then((res) => {
+                    this.event.setEvent(res.data);
+                })
+                .catch((err) => {
+                    this.errorMessage = "An error occurred  while trying to fetch users"
+                });
+        },
+        async fetchRole() {
+            axios({
+                method: "get",
+                url: "http://localhost/api/role/",
+                headers: {
+                    Accept: "application/json",
+                },
+                withCredentials: true,
+            })
+                .then((res) => {
+                    this.role.setRole(res.data);
+                })
+                .catch((err) => {
+                    this.errorMessage = "An error occurred  while trying to fetch users"
+                });
+        },
     },
     created() {
-        Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments(), this.fetchPrayerAlarm()]).then((res) => { });
+        Promise.all([this.fetchAllUsers(), this.fetchAllPosts(), this.fetchAllPostComments(), this.fetchPrayerAlarm(), this.fetchEvents(), this.fetchRole()]).then((res) => { });
     }
 };
 </script>
