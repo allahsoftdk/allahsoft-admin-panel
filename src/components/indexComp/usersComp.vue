@@ -8,9 +8,9 @@ export default {
         return { userStore }
     },
     methods: {
-        deleteUser() {
+        deleteUser(userId: number, username: string) {
             Swal.fire({
-                title: 'Are you sure?',
+                title: 'Terminate ' + username + '?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -21,13 +21,14 @@ export default {
                 if (result.isConfirmed) {
                     axios({
                         method: "delete",
-                        url: "http://localhost/api/post_comment/1",
+                        url: "http://localhost/api/user/" + userId,
                         headers: {
                             Accept: "application/json",
                         },
                         withCredentials: true,
                     })
                         .then(() => {
+                            this.userStore.deleteUser(userId);
                             Swal.fire(
                                 'Deleted!',
                                 'User has been deleted.',
@@ -66,7 +67,7 @@ export default {
                 <td>{{ user.email }}</td>
                 <td>{{ user.role.role }}</td>
                 <td><a class=" text-light btn btn-info" href="#">View activity</a></td>
-                <td><button type="button" @click="deleteUser()" class="btn btn-danger">Terminate</button>
+                <td><button type="button" @click="deleteUser(user.id, user.name)" class="btn btn-danger">Terminate</button>
                 </td>
             </tr>
         </tbody>
