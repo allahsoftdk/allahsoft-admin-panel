@@ -17,6 +17,14 @@ export const useEventStore = defineStore("islamicEvent", {
         setEvent(islamicEvent: Event) {
             this.islamicEvent = islamicEvent;
         },
+        addIslamicEvent(islamicEvent: any) {
+            this.islamicEvent.push(islamicEvent)
+        },
+        deleteIslamicEvent(id: number) {
+            this.islamicEvent = this.islamicEvent.filter((t: { id: number; }) => {
+                t.id !== id
+            })
+        }
     },
     persist: {
         storage: sessionStorage,

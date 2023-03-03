@@ -17,6 +17,14 @@ export const useRoleStore = defineStore("role", {
         setRole(Role: Role) {
             this.role = Role;
         },
+        addRole(role: any) {
+            this.role.push(role)
+        },
+        deleteRole(id: number) {
+            this.role = this.role.filter((t: { id: number; }) => {
+                t.id !== id
+            })
+        }
     },
     persist: {
         storage: sessionStorage,

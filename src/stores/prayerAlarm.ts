@@ -19,6 +19,11 @@ export const usePrayerAlarmStore = defineStore("prayerAlarm", {
         },
         addAlarm(alarm: any) {
             this.alarm.push(alarm)
+        },
+        deletePrayerAlarm(id: number) {
+            this.alarm = this.alarm.filter((t: { id: number; }) => {
+                t.id !== id
+            })
         }
     },
     persist: {

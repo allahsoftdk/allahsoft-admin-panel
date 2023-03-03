@@ -33,16 +33,24 @@ export interface PostComment {
 export interface PrayerAlarm {
     length: any;
     push: any;
+    filter: any;
+    t: number;
 
 }
 
 export interface Role {
     length: any;
+    filter: any;
+    t: number;
+    push: any;
 
 }
 
 export interface Event {
     length: any;
+    filter: any;
+    t: number;
+    push: any;
 
 }
 
