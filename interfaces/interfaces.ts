@@ -9,6 +9,7 @@ export interface User {
     updatedAt: Date;
     roleId: Number;
     role: Role;
+    userId: number;
 };
 
 export interface Role {
@@ -53,5 +54,9 @@ export interface Event {
     eventTo: string;
 
 
+}
+
+export interface Login{
+    id: number;
 }
 

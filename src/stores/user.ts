@@ -12,6 +12,9 @@ export const useUserStore = defineStore("user", {
     getUser(): User[] {
       return this.user;
     },
+    getUserById: (state) => {
+      return (userId) => state.user.find((user) => user.id === userId)
+    },
   },
   actions: {
     setUser(user: User[]) {

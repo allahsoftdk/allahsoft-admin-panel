@@ -1,8 +1,13 @@
 <script lang="ts">
 import axios from "axios";
 import Swal from "sweetalert2";
+import {useLoginStore} from "@/stores/login";
 export default {
   name: "userLogin",
+  setup() {
+        const loginInfo = useLoginStore();
+        return { loginInfo }
+    },
   data() {
     return {
       username: "",
@@ -41,6 +46,7 @@ export default {
             icon: 'success',
             title: 'Success login'
           })
+          this.loginInfo.setUserLogin(user.data);
           if (user.data.roleId.role === "admin") {
             this.$router.push("/");
           } else {
