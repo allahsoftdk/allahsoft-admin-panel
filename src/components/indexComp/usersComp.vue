@@ -1,11 +1,15 @@
 <script lang="ts">
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useUserStore } from "../../stores/user";
+import { useUserStore } from "@/stores/user";
+import { usePostStore } from "@/stores/posts";
+import { usePostCommentStore } from "@/stores/postComments"; 
 export default {
     setup() {
         const userStore = useUserStore();
-        return { userStore }
+        const postCommentStore = usePostCommentStore();
+        const postStore = usePostStore();
+        return { userStore, postCommentStore, postStore }
     },
     methods: {
         deleteUser(userId: number, username: string) {
@@ -14,9 +18,9 @@ export default {
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#099c27',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Terminate'
             }).then((result) => {
                 if (result.isConfirmed) {
                     axios({
@@ -29,9 +33,11 @@ export default {
                     })
                         .then(() => {
                             this.userStore.deleteUser(userId);
+                            this.postStore.deletePostLinkedToUser(userId);
+                            this.postCommentStore.deletePostCommentLinkedToUser(userId);
                             Swal.fire(
                                 'Deleted!',
-                                'User has been deleted.',
+                                'The user and its activities has been deleted.',
                                 'success'
                             )
                         })

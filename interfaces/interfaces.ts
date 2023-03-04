@@ -18,16 +18,16 @@ export interface Role {
 
 
 export interface Post {
-    length: any;
-    filter: any;
     t: number;
+    id: number;
+    userId: number;
 
 }
 
 export interface PostComment {
-    length: any;
-    id: Number;
-    filter: any;
+    id: number;
+    userId: number;
+
 
 }
 

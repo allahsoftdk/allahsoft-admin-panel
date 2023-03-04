@@ -60,7 +60,7 @@ export default {
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#099c27',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
@@ -96,6 +96,8 @@ export default {
                 html: `<label for="eventname">Update prayer alarm</label><textarea class="form-control pt-2" id="eventname"rows="3">` + roleName + `</textarea>`,
                 confirmButtonColor: "green",
                 confirmButtonText: 'Update',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
                 focusConfirm: false,
                 preConfirm: (res) => {
                     const updateRole = Swal.getPopup().querySelector('#eventname').value 

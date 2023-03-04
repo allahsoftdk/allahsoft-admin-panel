@@ -14,7 +14,7 @@ export default {
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#099c27',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
@@ -56,6 +56,7 @@ export default {
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Description</th>
+                <th scope="col">View</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
@@ -65,6 +66,8 @@ export default {
                 <td> {{ post.user.name }}</td>
                 <td>{{ post.user.email }}</td>
                 <td>{{ post.description }}</td>
+                <td><button type="button" class="btn btn-info text-white"
+                        @click="deletePost(post.id, post.user.name)">View post</button></td>
                 <td><button type="button" class="btn btn-danger"
                         @click="deletePost(post.id, post.user.name)">Delete</button></td>
             </tr>

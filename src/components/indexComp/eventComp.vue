@@ -70,7 +70,7 @@ export default {
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#099c27',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
@@ -102,16 +102,18 @@ export default {
         },
         updateEvent(eventId: number, eventName: string, eventDate: string, eventFrom: string, eventTo: string) {
             Swal.fire({
-                title: 'Update alarm name',
+                title: 'Update event',
                 html: `<div class="form-group"><label for="eventname">Event name</label><input type="text" class="form-control" id="eventname" value="`+eventName+`"></div><div class="form-group"><label for="eventdate">Event date</label><input type="text" class="form-control" id="eventdate" value="`+eventDate+`"></div><div class="form-group"><label for="eventfrom">Event from</label><input type="text" class="form-control" id="eventfrom" value="`+eventFrom+`"></div><div class="form-group"><label for="eventto">Event to</label><input type="text" class="form-control" id="eventto" value="`+eventTo+`"></div>`,
                 confirmButtonColor: "green",
                 confirmButtonText: 'Update',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
                 focusConfirm: false,
                 preConfirm: (res) => {
                     const eventname = Swal.getPopup().querySelector('#eventname').value 
                     const eventdate = Swal.getPopup().querySelector('#eventdate').value
-                    const eventfrom = Swal.getPopup().querySelector('#eventdate').value
-                    const eventto = Swal.getPopup().querySelector('#eventdate').value
+                    const eventfrom = Swal.getPopup().querySelector('#eventfrom').value
+                    const eventto = Swal.getPopup().querySelector('#eventto').value
                     return { eventname: eventname, eventdate: eventdate, eventfrom: eventfrom, eventto: eventto  }
                 }
             }).then((result) => {
@@ -135,7 +137,7 @@ export default {
                             this.event.updateEvent(eventId ,result.value?.eventname, result.value?.eventdate, result.value?.eventfrom, result.value?.eventto);
                             Swal.fire(
                                 'Updated!',
-                                'The alarm has been updated.',
+                                'The event has been updated.',
                                 'success'
                             )
                         })
