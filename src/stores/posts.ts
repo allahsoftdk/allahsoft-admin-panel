@@ -12,6 +12,9 @@ export const usePostStore = defineStore("post", {
         getPosts(): Post[] {
             return this.post;
         },
+        getPostById: (state) => {
+            return (userId) => state.post.find((post) => post.id === userId)
+          },
     },
     actions: {
         setPosts(post: Post[]) {

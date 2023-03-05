@@ -10,6 +10,7 @@ export default {
     data() {
         return {
             alarmName: "",
+            errorMessage: "",
         }
     },
     methods: {
@@ -26,6 +27,7 @@ export default {
                 },
             })
                 .then((res) => {
+                    this.errorMessage = "";
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-right',
@@ -52,7 +54,7 @@ export default {
                     this.alarmName = "";
 
                 })
-                .catch((err) => { console.log(err) });
+                .catch((err) => { this.errorMessage = err.response.data.msg; });
         },
         deletePrayerAlarm(alarmId: number, alarmName: string) {
             Swal.fire({
@@ -164,6 +166,9 @@ export default {
     <div class="row">
         <div class="col-12 pb-3 border-bottom">
             <div class="row">
+                <div class="text-center text-danger" v-if="errorMessage">
+              <h6>{{ errorMessage }}</h6>
+            </div>
                 <div class="col-11 "><input class="form-control border" id="name" v-model="alarmName"
                         placeholder="Enter the alarms name"></div>
                 <div class="col-1 d-flex justify-content-end"><button type="submit" class="btn btn-success text-white"

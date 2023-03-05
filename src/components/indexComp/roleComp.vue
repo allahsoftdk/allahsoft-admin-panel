@@ -10,6 +10,7 @@ export default {
     data() {
         return {
             roleName: "",
+            errorMessage: "",
         }
     },
     methods: {
@@ -26,6 +27,7 @@ export default {
                 },
             })
                 .then((res) => {
+                    this.errorMessage = "";
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-right',
@@ -52,7 +54,9 @@ export default {
                     this.roleName = "";
 
                 })
-                .catch((err) => { console.log(err) });
+                .catch((err) => { 
+                    this.errorMessage = err.response.data.msg;
+                 });
         },
         deleteRole(roleId: number, roleName: string) {
             Swal.fire({
@@ -164,6 +168,9 @@ export default {
     <div class="row">
         <div class="col-12 pb-3 border-bottom">
             <div class="row">
+                <div class="text-center text-danger" v-if="errorMessage">
+              <h6>{{ errorMessage }}</h6>
+            </div>
                 <div class="col-11"><input class="form-control" id="name" v-model="roleName"
                         placeholder="Enter the alarms name"></div>
                 <div class="col-1 d-flex justify-content-end"><button type="submit" class="btn btn-success text-white"

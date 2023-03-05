@@ -12,7 +12,8 @@ export default {
             eventName: "",
             eventDate: "",
             eventFrom: "",
-            eventTo: ""
+            eventTo: "",
+            errorMessage: "",
         }
     },
     methods: {
@@ -32,6 +33,7 @@ export default {
                 },
             })
                 .then((res) => {
+                    this.errorMessage = "";
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-right',
@@ -62,7 +64,7 @@ export default {
                     this.eventTo = "";
 
                 })
-                .catch((err) => { console.log(err) });
+                .catch((err) => { this.errorMessage = err.response.data.msg; });
         },
         deleteEvent(eventId: number, eventName: string) {
             Swal.fire({
@@ -181,6 +183,9 @@ export default {
     <div class="row">
         <div class="col-12 pb-3 border-bottom">
             <div class="row">
+                <div class="text-center text-danger" v-if="errorMessage">
+              <h6>{{ errorMessage }}</h6>
+            </div>
                 <div class="col-2">
                     <input class="form-control" id="name" v-model="eventName" placeholder="Event name">
                 </div>

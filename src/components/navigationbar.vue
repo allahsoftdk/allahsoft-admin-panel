@@ -51,7 +51,7 @@ export default {
 </script>
 
 <template>
-    <div class="row p-3">
+   <div class="row p-3">
         <div class="col-12">
             <div class="row p-2 bg-light shadow border">
                 <div class="col-4">
