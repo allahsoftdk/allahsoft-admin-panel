@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseURL =
-    process.env.NODE_ENV === "production"
+    import.meta.env.MODE === "production"
         ? "https://admin.allahsoft.dk"
         : "http://localhost";
 export const axiosInstance = axios.create({
