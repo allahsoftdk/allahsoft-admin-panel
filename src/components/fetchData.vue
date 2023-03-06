@@ -1,6 +1,5 @@
 <script lang="ts">
-import axios from "axios";
-import Swal from "sweetalert2";
+import { axiosInstance } from "../../utils/axiosInstance"
 import { usePostStore } from "../stores/posts";
 import { useUserStore } from "../stores/user";
 import { usePostCommentStore } from "../stores/postComments";
@@ -24,28 +23,17 @@ export default {
     },
     methods: {
         async fetchAllUsers() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/user/",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("/api/user/", {
                 withCredentials: true,
+            }).then((res) => {
+                this.userStore.setUser(res.data);
             })
-                .then((res) => {
-                    this.userStore.setUser(res.data);
-                })
                 .catch((err) => {
                     this.errorMessage = "An error occurred  while trying to fetch users"
                 });
         },
         async fetchAllPosts() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/post/",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("api/post/", {
                 withCredentials: true,
             })
                 .then((res) => {
@@ -54,12 +42,7 @@ export default {
                 .catch((err) => console.log(err));
         },
         async fetchAllPostComments() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/post_comment/",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("api/post_comment/", {
                 withCredentials: true,
             })
                 .then((res) => {
@@ -68,12 +51,7 @@ export default {
                 .catch((err) => console.log(err));
         },
         async fetchPrayerAlarm() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/prayer_alarm",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("api/prayer_alarm", {
                 withCredentials: true,
             })
                 .then((res) => {
@@ -82,12 +60,7 @@ export default {
                 .catch((err) => console.log(err));
         },
         async fetchEvents() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/event/",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("/api/event/", {
                 withCredentials: true,
             })
                 .then((res) => {
@@ -98,12 +71,7 @@ export default {
                 });
         },
         async fetchRole() {
-            axios({
-                method: "get",
-                url: "http://localhost/api/role/",
-                headers: {
-                    Accept: "application/json",
-                },
+            axiosInstance.get("api/role/", {
                 withCredentials: true,
             })
                 .then((res) => {

@@ -1,13 +1,13 @@
 <script lang="ts">
-import axios from "axios";
+import { axiosInstance } from "../../utils/axiosInstance"
 import Swal from "sweetalert2";
-import {useLoginStore} from "@/stores/login";
+import { useLoginStore } from "@/stores/login";
 export default {
   name: "userLogin",
   setup() {
-        const loginInfo = useLoginStore();
-        return { loginInfo }
-    },
+    const loginInfo = useLoginStore();
+    return { loginInfo }
+  },
   data() {
     return {
       username: "",
@@ -17,17 +17,10 @@ export default {
   },
   methods: {
     async login() {
-      axios({
-        method: "post",
-        url: "http://localhost/api/auth/login",
-        headers: {
-          Accept: "application/json",
-        },
+      await axiosInstance.post("/api/auth/login", {
         withCredentials: true,
-        data: {
-          name: this.username,
-          password: this.password,
-        },
+        name: this.username,
+        password: this.password,
       })
         .then((user) => {
           const Toast = Swal.mixin({

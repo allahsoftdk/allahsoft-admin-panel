@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import indexComp from "../components/indexComp.vue";
 import loginComp from "../components/loginComp.vue";
 import userActivityComp from "../components/userActivityComp.vue";
-import axios from "axios";
+import { axiosInstance } from "../../utils/axiosInstance"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,14 +29,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  console.log(to);
   if (to.name !== "login") {
     try {
-      const { data } = await axios({
-        method: "post",
-        url: "http://localhost/api/auth/restricted",
-        headers: {
-          Accept: "application/json",
-        },
+      const { data } = await axiosInstance.post("api/auth/restricted", {
         withCredentials: true,
       })
       if (data) {
@@ -45,6 +41,7 @@ router.beforeEach(async (to, from, next) => {
         next({ name: "login" });
       }
     } catch (error) {
+      console.log(error)
       next({ name: "login" });
     }
   } else {
