@@ -1,5 +1,5 @@
 <script lang="ts">
-import { axiosInstance } from "../../utils/axiosInstance"
+import { axiosInstance } from "../utils/axiosInstance"
 import Swal from "sweetalert2";
 import { useLoginStore } from "@/stores/login";
 export default {

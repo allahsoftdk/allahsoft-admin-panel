@@ -1,5 +1,5 @@
 <script lang="ts">
-import { axiosInstance } from "../../utils/axiosInstance"
+import { axiosInstance } from "../utils/axiosInstance"
 import { usePostStore } from "../stores/posts";
 import { useUserStore } from "../stores/user";
 import { usePostCommentStore } from "../stores/postComments";
@@ -24,7 +24,6 @@ export default {
     methods: {
         async fetchAllUsers() {
             axiosInstance.get("/api/user/", {
-                withCredentials: true,
             }).then((res) => {
                 this.userStore.setUser(res.data);
             })
@@ -34,7 +33,6 @@ export default {
         },
         async fetchAllPosts() {
             axiosInstance.get("api/post/", {
-                withCredentials: true,
             })
                 .then((res) => {
                     this.postStore.setPosts(res.data);
@@ -43,7 +41,6 @@ export default {
         },
         async fetchAllPostComments() {
             axiosInstance.get("api/post_comment/", {
-                withCredentials: true,
             })
                 .then((res) => {
                     this.postComment.setPostComment(res.data);
@@ -52,7 +49,6 @@ export default {
         },
         async fetchPrayerAlarm() {
             axiosInstance.get("api/prayer_alarm", {
-                withCredentials: true,
             })
                 .then((res) => {
                     this.prayerAlarm.setPrayerAlarm(res.data);
@@ -61,7 +57,6 @@ export default {
         },
         async fetchEvents() {
             axiosInstance.get("/api/event/", {
-                withCredentials: true,
             })
                 .then((res) => {
                     this.event.setEvent(res.data);
@@ -72,7 +67,6 @@ export default {
         },
         async fetchRole() {
             axiosInstance.get("api/role/", {
-                withCredentials: true,
             })
                 .then((res) => {
                     this.role.setRole(res.data);
