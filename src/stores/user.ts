@@ -1,30 +1,33 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
+import type { User } from "interfaces/interfaces";
 
-export const userStore = defineStore("user", {
+export const useUserStore = defineStore("user", {
   state: () => {
     return {
-      user: null,
+      user: [] as User[]
     };
   },
   getters: {
-    getUser() {
+    getUser(): User[] {
       return this.user;
+    },
+    getUserById: (state) => {
+      return (userId) => state.user.find((user) => user.id === userId)
     },
   },
   actions: {
-    setUser(user: any) {
+    setUser(user: User[]) {
       this.user = user;
     },
+    deleteUser(id: number) {
+      this.user = this.user.filter((t) => {
+         return t.id !== id
+      })
+  },
   },
   persist: {
     storage: sessionStorage,
   },
 });
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}

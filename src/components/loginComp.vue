@@ -1,29 +1,13 @@
-<template>
-  <div>
-    <label for="fname">First name:</label><br />
-    <input type="text" v-model="username" placeholder="password" /><br /><br />
-    <label for="lname">Last name:</label><br />
-    <input
-      type="password"
-      v-model="password"
-      placeholder="password"
-    /><br /><br />
-    <button @click="login()">Login</button>
-  </div>
-  <div v-if="errorMessage">
-    <p>{{ errorMessage }}</p>
-  </div>
-</template>
-
 <script lang="ts">
 import axios from "axios";
-import { mapStores } from "pinia";
-import { userStore } from "../stores/user";
+import Swal from "sweetalert2";
+import {useLoginStore} from "@/stores/login";
 export default {
   name: "userLogin",
-  computed: {
-    ...mapStores(userStore),
-  },
+  setup() {
+        const loginInfo = useLoginStore();
+        return { loginInfo }
+    },
   data() {
     return {
       username: "",
@@ -33,7 +17,6 @@ export default {
   },
   methods: {
     async login() {
-      console.log("User: " + this.username + "\n Password: " + this.password);
       axios({
         method: "post",
         url: "http://localhost/api/auth/login",
@@ -47,17 +30,68 @@ export default {
         },
       })
         .then((user) => {
-          this.userStore.setUser(user.data);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Success login'
+          })
+          this.loginInfo.setUserLogin(user.data);
           if (user.data.roleId.role === "admin") {
             this.$router.push("/");
           } else {
             this.errorMessage = "You are not an admin and cannot log in here";
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.errorMessage = err.response.data.msg;
+        });
     },
   },
 };
 </script>
 
-<style></style>
+
+<template>
+  <div class="container w-25">
+    <div class="row pt-5">
+      <div class="col-12 d-flex justify-content-center">
+        <div style="width: 18rem;">
+          <div class="p-3">
+            <h3 class="text-center strong p-3">Allahsoft.dk</h3>
+            <div class="text-center text-danger" v-if="errorMessage">
+              <h6>{{ errorMessage }}</h6>
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" v-model="username" placeholder="Username">
+            </div>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control" v-model="password" placeholder="Password">
+            </div>
+            <div class="text-center">
+              <button class="btn btn-primary btn-block" @click="login()">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+<style>
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+}
+</style>

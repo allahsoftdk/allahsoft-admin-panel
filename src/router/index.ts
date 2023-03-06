@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import indexComp from "../components/indexComp.vue";
 import loginComp from "../components/loginComp.vue";
+import userActivityComp from "../components/userActivityComp.vue";
 import axios from "axios";
 
 const router = createRouter({
@@ -16,6 +17,12 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: loginComp,
+      props: true,
+    },
+    {
+      path: "/activities/:id",
+      name: "activities",
+      component: userActivityComp,
       props: true,
     }
   ],

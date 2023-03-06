@@ -1,39 +1,29 @@
 <script lang="ts">
-import axios from "axios";
-import { mapStores } from "pinia";
-import { userStore } from "../stores/user";
+import navigationbar from "./navigationbar.vue";
+import status from "./indexComp/status.vue";
+import administration from "./indexComp/administration.vue";
+import fetchData from "./fetchData.vue";
 export default {
-  props: {
-    user: {},
-  },
-  computed: {
-    ...mapStores(userStore),
-  },
-  methods: {
-    logOut() {
-      axios({
-        method: "post",
-        url: "http://localhost/api/auth/logout",
-        headers: {
-          Accept: "application/json",
-        },
-        withCredentials: true,
-      })
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch((err) => console.log(err));
-    },
-  },
+  components: {
+    navigationbar,
+    status,
+    administration,
+    fetchData
+  }
 };
 </script>
 
 <template>
-  <div>
-    <h2>Index page</h2>
-    <p>User: {{ userStore.getUser }}</p>
-    <button @click="logOut()">Log out</button>
+  <div class="container-fluid">
+    <fetchData></fetchData>
+    <navigationbar></navigationbar>
+    <status></status>
+    <administration></administration>
   </div>
 </template>
 
-<style></style>
+<style>
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+</style>
